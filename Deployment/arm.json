@@ -57,10 +57,10 @@
       "name": "[concat(parameters('resourcesName'), '-AppService')]",
       "location": "[resourceGroup().location]",
       "sku": {
-        "name": "P1v2",
-        "tier": "PremiumV2",
-        "size": "P1v2",
-        "family": "Pv2",
+        "name": "B3",
+        "tier": "Basic",
+        "size": "B3",
+        "family": "B",
         "capacity": 1
       },
       "kind": "linux",
@@ -432,9 +432,9 @@
       "apiVersion": "2021-01-01",
       "name": "[variables('adxClusterName')]",
       "sku": {
-        "name": "Standard_D11_v2",
-        "tier": "Standard",
-        "capacity": 2
+        "name": "Dev(No SLA)_Standard_D11_v2",
+        "tier": "Basic",
+        "capacity": 1
       },
       "location": "[resourceGroup().location]",
       "tags": {
