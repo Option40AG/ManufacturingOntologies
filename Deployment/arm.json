@@ -22,6 +22,12 @@
       "metadata": {
         "description": "Password for the Virtual Machine and UA Cloud Twin."
       }
+    },
+    "tags": {
+      "type": "object",
+      "metadata": {
+        "description": "The owner of these resources, in the following key/valye pair syntax: owner={owner_name}"
+      }
     }
   },
   "variables": {
@@ -35,7 +41,7 @@
     "adxClusterName": "[concat(parameters('resourcesName'), 'ADX')]",
     "adxDBName": "[concat(parameters('resourcesName'), '-DB')]",
     "adtDataHistoryTableName": "[concat(parameters('resourcesName'), '-adt-table')]",
-    "eventHubsNamespaceName": "[concat(parameters('resourcesName'), '-EventHubs')]"
+    "eventHubsNamespaceName": "[concat(parameters('resourcesName'), '-EventHubs')]"    
   },
   "resources": [
     {
@@ -43,6 +49,7 @@
       "apiVersion": "2020-12-01",
       "name": "[concat(parameters('resourcesName'), '-ADT')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "privateEndpointConnections": [],
         "publicNetworkAccess": "Enabled"
@@ -56,6 +63,7 @@
       "apiVersion": "2021-02-01",
       "name": "[concat(parameters('resourcesName'), '-AppService')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "sku": {
         "name": "B3",
         "tier": "Basic",
@@ -82,6 +90,7 @@
       "apiVersion": "2021-02-01",
       "name": "[concat(parameters('resourcesName'), '-UA-Cloud-Twin')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "httpsOnly": true,
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', concat(parameters('resourcesName'), '-AppService'))]",
@@ -113,6 +122,7 @@
         {
           "apiVersion": "2015-08-01",
           "location": "[resourceGroup().location]",
+          "tags": "[parameters('tags')]",
           "name": "appsettings",
           "properties": {
             "ADMIN_PASSWORD": "[parameters('adminPassword')]",
@@ -140,6 +150,7 @@
       "apiVersion": "2021-02-01",
       "name": "[concat(parameters('resourcesName'), '-AAS-Repo')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "httpsOnly": true,
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', concat(parameters('resourcesName'), '-AppService'))]",
@@ -168,6 +179,7 @@
         {
           "apiVersion": "2015-08-01",
           "location": "[resourceGroup().location]",
+          "tags": "[parameters('tags')]",
           "name": "appsettings",
           "properties": {
             "ADX_HOST": "[reference(resourceId('Microsoft.Kusto/clusters', variables('adxClusterName')), '2022-02-01').uri]",
@@ -191,6 +203,7 @@
       "apiVersion": "2021-02-01",
       "name": "[concat(parameters('resourcesName'), '-UA-Cloud-Action')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "httpsOnly": true,
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', concat(parameters('resourcesName'), '-AppService'))]",
@@ -219,6 +232,7 @@
         {
           "apiVersion": "2015-08-01",
           "location": "[resourceGroup().location]",
+          "tags": "[parameters('tags')]",
           "name": "appsettings",
           "properties": {
             "ADMIN_PASSWORD": "[parameters('adminPassword')]",
@@ -252,6 +266,7 @@
       "apiVersion": "2021-04-01",
       "name": "[concat(parameters('resourcesName'), 'storage')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "sku": {
         "name": "Standard_LRS"
       },
@@ -262,6 +277,7 @@
       "apiVersion": "2020-11-01",
       "name": "[concat(parameters('resourcesName'), '-IPAddress')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "sku": {
         "name": "Basic"
       },
@@ -277,6 +293,7 @@
       "apiVersion": "2020-11-01",
       "name": "[concat(parameters('resourcesName'), '-NSG')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "securityRules": [
           {
@@ -300,6 +317,7 @@
       "apiVersion": "2020-11-01",
       "name": "[concat(parameters('resourcesName'), '-Network')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -327,6 +345,7 @@
       "apiVersion": "2020-11-01",
       "name": "[concat(parameters('resourcesName'), '-IF')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "ipConfigurations": [
           {
@@ -353,6 +372,7 @@
       "apiVersion": "2022-11-01",
       "name": "[concat(parameters('resourcesName'), '-VM')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "hardwareProfile": {
           "vmSize": "Standard_E2s_v5"
@@ -408,6 +428,7 @@
       "name": "[concat(parameters('resourcesName'), '-VM','/Bootstrap')]",
       "apiVersion": "2022-11-01",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('resourcesName'), '-VM')]"
       ],
@@ -437,6 +458,7 @@
         "capacity": 1
       },
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "tags": {
         "Created By": "GitHub quickstart template"
       },
@@ -458,6 +480,7 @@
       "apiVersion": "2021-01-01",
       "name": "[format('{0}/{1}', variables('adxClusterName'), 'ontologies')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Kusto/clusters', variables('adxClusterName'))]"
       ],
@@ -472,6 +495,7 @@
       "apiVersion": "2022-12-29",
       "name": "[format('{0}/{1}/{2}', variables('adxClusterName'), 'ontologies','EventHubDataConnection')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Kusto/clusters/databases/scripts', variables('adxClusterName'), 'ontologies', 'OPCUA-parsing-script')]"
       ],
@@ -492,6 +516,7 @@
       "apiVersion": "2022-12-29",
       "name": "[format('{0}/{1}/{2}', variables('adxClusterName'), 'ontologies','EventHubMetadataConnection')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "dependsOn": [
         "[resourceId('Microsoft.Kusto/clusters/databases/scripts', variables('adxClusterName'), 'ontologies', 'OPCUA-parsing-script')]"
       ],
@@ -536,6 +561,7 @@
       "apiVersion": "2021-11-01",
       "name": "[variables('eventHubsNamespaceName')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "sku": {
         "name": "Standard",
         "tier": "Standard",
@@ -617,6 +643,7 @@
       "name": "[concat(parameters('resourcesName'), '-Identity')]",
       "apiVersion": "2018-11-30",
       "location": "[resourceGroup().location]"
+      "tags": "[parameters('tags')]",
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
