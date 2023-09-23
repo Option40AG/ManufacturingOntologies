@@ -432,9 +432,6 @@
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('resourcesName'), '-VM')]"
       ],
-      "tags": {
-        "displayName": "Run Bootstrap"
-      },
       "properties": {
         "publisher": "Microsoft.Compute",
         "type": "CustomScriptExtension",
@@ -459,9 +456,6 @@
       },
       "location": "[resourceGroup().location]",
       "tags": "[parameters('tags')]",
-      "tags": {
-        "Created By": "GitHub quickstart template"
-      },
       "properties": {
         "trustedExternalTenants": [
           {
