@@ -642,8 +642,8 @@
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
       "name": "[concat(parameters('resourcesName'), '-Identity')]",
       "apiVersion": "2018-11-30",
-      "location": "[resourceGroup().location]"
-      "tags": "[parameters('tags')]",
+      "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]"
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
